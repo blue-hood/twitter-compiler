@@ -25,6 +25,37 @@ foreach ($tweets as $index => &$tweet) {
     $tweet['created_at'] = (new DateTime($tweet['created_at']))
         ->setTimeZone(new DateTimeZone('Asia/Tokyo'))
         ->format('Y年m月d日 H時');
+
+    // 改行
+    $tweet['full_text'] = nl2br($tweet['full_text']);
+
+    // URL を変換
+    foreach ($tweet['entities']['urls'] as $url) {
+        $tweet['full_text'] = str_replace(
+            $url['url'],
+            "<a href=\"{$url['expanded_url']}\" target=\"_blank\">" . htmlspecialchars($url['display_url']) . "</a>",
+            $tweet['full_text']
+        );
+    }
+
+    // 画像を変換
+    if (!empty($tweet['extended_entities']['media'])) {
+        foreach ($tweet['extended_entities']['media'] as $media) {
+            if ($media['type'] == 'photo') {
+                $basename = $tweet['id_str'] . '-' . basename($media['media_url_https']);
+                $image = file_get_contents("data/tweet_media/${basename}");
+                $tweet['full_text'] = str_replace(
+                    $media['url'],
+                    "<img src=\"data:image/" .
+                        pathinfo($basename, PATHINFO_EXTENSION) .
+                        ";base64," .
+                        base64_encode($image) .
+                        "\">",
+                    $tweet['full_text']
+                );
+            }
+        };
+    }
 }
 ?>
 
@@ -35,10 +66,10 @@ foreach ($tweets as $index => &$tweet) {
   </head>
   <body>
     <?php foreach ($tweets as $tweet): ?>
-      <div>
+      <section>
         <div><?php echo $tweet['created_at']; ?></div>
         <p><?php echo $tweet['full_text']; ?></p>
-      </div>
+      </section>
     <?php endforeach; ?>
   </body>
 </html>
