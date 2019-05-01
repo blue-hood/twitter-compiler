@@ -1,4 +1,5 @@
 /data/
-/html/index.html
+/html/*.html
 /html/images/
 /html/videos/
+/miniblog/

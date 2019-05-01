@@ -1,4 +1,7 @@
 <?php
+// Twitter データを miniblog に変換します。
+// また、必要なメディアを html/ に配置します。
+
 $tweets = json_decode(file_get_contents('data/tweet.json'), true);
 
 // ソート
@@ -24,13 +27,8 @@ foreach ($tweets as $index => &$tweet) {
         continue;
     }
 
-    // 時間フォーマットを変換
-    $tweet['created_at'] = (new DateTime($tweet['created_at']))
-        ->setTimeZone(new DateTimeZone('Asia/Tokyo'))
-        ->format('Y年m月d日 H時');
-
-    // 改行
-    $tweet['full_text'] = nl2br($tweet['full_text']);
+    // ISO 8601 時間フォーマットに変換
+    $tweet['created_at'] = (new DateTime($tweet['created_at']))->format('c');
 
     // URL を変換
     foreach ($tweet['entities']['urls'] as $url) {
@@ -87,21 +85,15 @@ foreach ($tweets as $index => &$tweet) {
         }
     }
 }
-?>
 
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Twitter Compiler</title>
-    <link rel="stylesheet" href="main.css">
-  </head>
-  <body>
-    <?php foreach ($tweets as $index => $tweet): ?>
-      <section>
-        <div class="date"><?php echo $tweet['created_at']; ?></div>
-        <p><?php echo $tweet['full_text']; ?></p>
-      </section>
-    <?php endforeach; ?>
-  </body>
-</html>
+// miniblog json 生成
+$miniblog = [];
+foreach ($tweets as $tweet) {
+    $miniblog[] = [
+        'date' => $tweet['created_at'],
+        'text' => $tweet['full_text']
+    ];
+}
+
+echo json_encode($miniblog, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+?>
