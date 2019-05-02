@@ -10,7 +10,7 @@ foreach ($miniblog as $log) {
     $days[$ymd] = true;
 }
 
-foreach ($days as $key => $value) {
-    echo "${key}\n";
+foreach ($days as $day => $value) {
+    echo "${day}\n";
 }
 ?>

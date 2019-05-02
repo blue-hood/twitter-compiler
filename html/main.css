@@ -1,7 +1,41 @@
+@import url("https://unpkg.com/ress/dist/ress.min.css");
+
+body {
+  background-color: #eee;
+  font-family: "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", "游ゴシック Medium", "Yu Gothic Medium", sans-serif;
+  font-weight: normal;
+  color: #222;
+  line-height: 1.75;
+}
+
 video {
   display: block;
+  max-width: 100%;
 }
 
 img {
   display: block;
+  max-width: 100%;
+}
+
+article {
+  background-color: white;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+}
+
+section {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.date {
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
 }

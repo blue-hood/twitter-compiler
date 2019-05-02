@@ -93,9 +93,15 @@ unset($tweet);
 // miniblog 生成
 $miniblog = [];
 foreach ($tweets as $tweet) {
+    $tags = [];
+    foreach ($tweet['entities']['hashtags'] as $hashtags) {
+        $tags[] = $hashtags['text'];
+    }
+
     $miniblog[] = [
         'date' => $tweet['created_at'],
-        'text' => $tweet['full_text']
+        'text' => $tweet['full_text'],
+        'tags' => $tags
     ];
 }
 
