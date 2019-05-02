@@ -30,6 +30,9 @@ foreach ($tweets as $index => &$tweet) {
     // ISO 8601 時間フォーマットに変換
     $tweet['created_at'] = (new DateTime($tweet['created_at']))->format('c');
 
+    // 改行
+    $tweet['full_text'] = nl2br($tweet['full_text']);
+
     // URL を変換
     foreach ($tweet['entities']['urls'] as $url) {
         $tweet['full_text'] = str_replace(
@@ -85,8 +88,9 @@ foreach ($tweets as $index => &$tweet) {
         }
     }
 }
+unset($tweet);
 
-// miniblog json 生成
+// miniblog 生成
 $miniblog = [];
 foreach ($tweets as $tweet) {
     $miniblog[] = [

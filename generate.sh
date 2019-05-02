@@ -9,5 +9,6 @@ php compile.php > miniblog/twitter.json
 # 日毎ページ生成
 for day in `php days.php miniblog/twitter.json`
 do
+  echo ${day}
   php day.php miniblog/twitter.json ${day} > html/${day}.html
 done
