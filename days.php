@@ -3,6 +3,11 @@
 
 $miniblog = json_decode(file_get_contents($argv[1]), true);
 
+// ソート
+usort($miniblog, function ($log1, $log2) {
+    return (new DateTime($log2['date']))->getTimestamp() <=> (new DateTime($log1['date']))->getTimestamp();
+});
+
 // 年月日を抽出
 $days = [];
 foreach ($miniblog as $log) {

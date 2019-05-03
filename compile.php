@@ -4,12 +4,6 @@
 
 $tweets = json_decode(file_get_contents('data/tweet.json'), true);
 
-// ソート
-usort($tweets, function ($tweet_1, $tweet_2) {
-    return (new DateTime($tweet_2['created_at']))->getTimestamp() <=>
-        (new DateTime($tweet_1['created_at']))->getTimestamp();
-});
-
 // フィルタ
 foreach ($tweets as $index => &$tweet) {
     // リツイートを除去

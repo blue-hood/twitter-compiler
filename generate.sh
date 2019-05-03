@@ -16,10 +16,12 @@ php compile.php > miniblog/twitter.json
 
 # 日毎ページ生成
 days=(`php days.php miniblog/twitter.json`)
-for day in ${days[@]}
+for ((i = 0; i < ${#days[@]}; i++))
 do
-  echo ${day}
-  php page.php day miniblog/twitter.json ${day} > html/${day}.html
+  echo ${days[$i]}
+
+  next=${days[($i + 1)%${#days[@]}]}
+  php page.php day miniblog/twitter.json ${days[$i - 1]} ${next} ${days[$i]} > html/${days[$i]}.html
 done
 
 # index.html のシンボリックリンク生成
